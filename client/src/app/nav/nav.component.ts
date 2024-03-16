@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { AccountService } from '../_services/account.service';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-nav',
@@ -8,20 +10,25 @@ import { AccountService } from '../_services/account.service';
 })
 export class NavComponent {
   model: any = {};
-  constructor(public accountService: AccountService) {}
+  constructor(
+    public accountService: AccountService,
+    private router: Router,
+    private toastr: ToastrService
+  ) {}
   ngOnInit(): void {}
 
   login(): void {
     // when the http service call is complete, it is auto unsubscribed because it is elminated from memory
     this.accountService.login(this.model).subscribe({
-      next: (response) => {
-        console.log(response);
+      next: (_) => {
+        this.router.navigateByUrl('/members');
       },
-      error: (error) => console.log(error),
+      error: (error) => this.toastr.error(error.error),
     });
   }
 
   logout() {
     this.accountService.logout();
+    this.router.navigateByUrl('/');
   }
 }
