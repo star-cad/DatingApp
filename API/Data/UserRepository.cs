@@ -24,11 +24,11 @@ namespace API.Data
 
         }
 
-        public async Task<AppUser> GetUserByUserNameAsync(string userName)
+        public async Task<AppUser> GetUserByUserNameAsync(string username)
         {
             return await _context.Users
             .Include(p => p.Photos)
-            .SingleOrDefaultAsync(x => x.UserName == userName);
+            .SingleOrDefaultAsync(x => x.Username == username);
 
         }
 
@@ -39,15 +39,15 @@ namespace API.Data
             .ToListAsync();
         }
 
-        public async Task<MemberDto> GetMemberByIdAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
+        // public async Task<MemberDto> GetMemberByIdAsync(int id)
+        // {
+        //     throw new NotImplementedException();
+        // }
 
-        public async Task<MemberDto> GetMemberAsync(string userName)
+        public async Task<MemberDto> GetMemberAsync(string username)
         {
             return await _context.Users
-                .Where(x => x.UserName == userName)
+                .Where(x => x.Username == username)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
         }

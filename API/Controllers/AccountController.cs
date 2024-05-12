@@ -23,7 +23,7 @@ public class AccountController : BaseApiController
     [HttpPost("register")]  // POST: api/account/register
     public async Task<ActionResult<UserDto>> Register(RegisterDto registerDto)
     {
-        if (await UserExists(registerDto.UserName))
+        if (await UserExists(registerDto.Username))
         {
             return BadRequest("User Name already exists!");
         }
@@ -31,7 +31,7 @@ public class AccountController : BaseApiController
 
         var user = new AppUser
         {
-            UserName = registerDto.UserName.ToLower(),
+            Username = registerDto.Username.ToLower(),
             PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(registerDto.Password)),
             PasswordSalt = hmac.Key
         };
@@ -40,15 +40,15 @@ public class AccountController : BaseApiController
 
         return new UserDto
         {
-            UserName = user.UserName,
+            Username = user.Username,
             Token = _tokenService.CreateToken(user)
         };
     }
 
     [HttpGet("{id}")] // /api/users/#
-    private async Task<bool> UserExists(string userName)
+    private async Task<bool> UserExists(string username)
     {
-        return await _context.Users.AnyAsync(x => x.UserName == userName.ToLower());
+        return await _context.Users.AnyAsync(x => x.Username == username.ToLower());
 
         // return await _context.Users.FindAsync(id);
     }
@@ -56,7 +56,7 @@ public class AccountController : BaseApiController
     [HttpPost("login")]  // POST: api/account/login
     public async Task<ActionResult<UserDto>> Login(LoginDto loginDto)
     {
-        var user = await _context.Users.SingleOrDefaultAsync(x => x.UserName == loginDto.UserName);
+        var user = await _context.Users.SingleOrDefaultAsync(x => x.Username == loginDto.Username);
         if (user == null)
         {
             return Unauthorized("Invalid User Name");
@@ -73,7 +73,7 @@ public class AccountController : BaseApiController
 
         return new UserDto
         {
-            UserName = user.UserName,
+            Username = user.Username,
             Token = _tokenService.CreateToken(user)
         };
     }

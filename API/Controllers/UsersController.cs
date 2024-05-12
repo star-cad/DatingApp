@@ -25,10 +25,10 @@ public class UsersController : BaseApiController
         return Ok(users);
     }
 
-    [HttpGet("{userName}")] // /api/userName
-    public async Task<ActionResult<MemberDto>> GetUser(string userName)
+    [HttpGet("{username}")] // /api/username
+    public async Task<ActionResult<MemberDto>> GetUser(string username)
     {
-        return await _userRepository.GetMemberAsync(userName);
+        return await _userRepository.GetMemberAsync(username);
     }
 
     // [HttpGet("{id}")] // /api/users/#

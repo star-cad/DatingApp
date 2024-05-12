@@ -33,7 +33,7 @@
       dropdown
     >
       <a class="dropdown-toggle text-light text-decoration-none" dropdownToggle>
-        Welcome {{ user.userName | titlecase }}
+        Welcome {{ user.username | titlecase }}
       </a>
       <div class="dropdown-menu" *dropdownMenu>
         <a class="dropdown-item">Edit Profile</a>
@@ -49,11 +49,11 @@
       *ngIf="!(accountService.currentUser$ | async)"
     >
       <input
-        name="userName"
-        [(ngModel)]="model.userName"
+        name="username"
+        [(ngModel)]="model.username"
         class="form-control me-2"
         type="text"
-        placeholder="UserName"
+        placeholder="Username"
       />
       <input
         name="password"
