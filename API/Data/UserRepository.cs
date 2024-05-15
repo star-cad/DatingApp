@@ -19,24 +19,29 @@ namespace API.Data
 
         public async Task<AppUser> GetUserByIdAsync(int id)
         {
-            return await _context.Users
+            var user = await _context.Users
             .FindAsync(id);
+
+            return user;
 
         }
 
         public async Task<AppUser> GetUserByUserNameAsync(string username)
         {
-            return await _context.Users
+            var users = await _context.Users
             .Include(p => p.Photos)
             .SingleOrDefaultAsync(x => x.Username == username);
 
+            return users;
         }
 
         public async Task<IEnumerable<AppUser>> GetUsersAsync()
         {
-            return await _context.Users
+            var users = await _context.Users
             .Include(p => p.Photos)
             .ToListAsync();
+
+            return users;
         }
 
         // public async Task<MemberDto> GetMemberByIdAsync(int id)
@@ -46,17 +51,21 @@ namespace API.Data
 
         public async Task<MemberDto> GetMemberAsync(string username)
         {
-            return await _context.Users
+            var member = await _context.Users
                 .Where(x => x.Username == username)
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .SingleOrDefaultAsync();
+
+            return member;
         }
 
         public async Task<IEnumerable<MemberDto>> GetMembersAsync()
         {
-            return await _context.Users
+            var members = await _context.Users
                 .ProjectTo<MemberDto>(_mapper.ConfigurationProvider)
                 .ToListAsync();
+
+            return members;
         }
 
         public async Task<bool> SaveAllAsync()
